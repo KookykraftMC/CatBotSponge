@@ -1,0 +1,17 @@
+[
+{
+  "modid": "CatBot",
+  "name": "CatBot",
+  "description": "KKMC's adorable chat plugin.",
+  "version": "1.0.0",
+  "mcversion": "1.10.2",
+  "logoFile": "",
+  "url": "http://kookykraftmc.net/index.php",
+  "updateUrl": "",
+  "authorList": ["Kraise_"],
+  "credits": "A cat",
+  "parent": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
