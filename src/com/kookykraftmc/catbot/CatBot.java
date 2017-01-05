@@ -31,13 +31,12 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 public class CatBot
 {
     final public static String CHAT_PREFIX = Color.DARK_MAGENTA + "[" + Color.MAGENTA + "CatBot" + Color.DARK_MAGENTA + "]" + Color.WHITE;
-    final public static String CONSOLE_PREFIX = "[CatBot]";
+    //final public static String CONSOLE_PREFIX = "[CatBot]"; Provided by default
     
     @Inject
     public Game game;
     
     @Inject
-    public static Logger log;
     
     @DefaultConfig(sharedRoot = false)
     @Inject
@@ -65,8 +64,6 @@ public class CatBot
     
     public static void sendMsg(CommandSource sender, String msg)
     {
-        String prefix;
-        prefix = (sender instanceof ConsoleSource)?CONSOLE_PREFIX:CHAT_PREFIX;
         Text txt = Text.builder(prefix + msg).toText();
         sender.sendMessage(txt);
     }
