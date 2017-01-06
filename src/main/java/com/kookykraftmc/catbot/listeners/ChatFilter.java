@@ -15,7 +15,7 @@ import com.kookykraftmc.catbot.CatBot;
 public class ChatFilter
 {
     final static public Random rdm = new Random();
-    final static Logger log = CatBot.log;
+    static Logger log;
     static public CatBot plugin;
     static public HashSet<String> badWords = new HashSet<String>(Arrays.asList("\\bl(a|@)g+(y|ing|s)?\\b","dick","fuck","\\b(bull)?shitt?(ing|y)?\\b","penis","vagina","fag","\\brape","slut","hitler","\\b(jack)?ass(holes?|lick|wipe)?\\b","arse(hole)?","bitch","whore","nigg(er|a)","bastard","bea?stiality","negro","retard","\\bcum\\b","cunt","dildo","bollocks?","\\bwank","jizz","piss"));
     static public String denyMsg;
@@ -25,6 +25,7 @@ public class ChatFilter
     {
         plugin = cb;
         loadCfg();
+        log = cb.log;
     }
 
     @Listener
@@ -35,7 +36,7 @@ public class ChatFilter
         if(!(e instanceof MessageChannelEvent.Chat)) return;
         Text msg = e.getMessage();
         List<Text> msgs = e.getMessage().getChildren();
-        Text newMessage = Text.EMPTY;
+        Text.Builder newMessageBuilder = Text.builder();
         for(Text msgPart:msgs)
         {
             String msgPlain = msgPart.toPlain();
@@ -45,12 +46,12 @@ public class ChatFilter
                 isFiltered = true;
                 msgPart = Text.builder(filteredMsg).toText();
             }
-            newMessage = Text.builder().append(newMessage, msgPart).build();
+            newMessageBuilder.append(msgPart);
         }
         if(isFiltered)
         {
-            e.setMessage(newMessage);
-            log.info("Original message: " + msg);
+            e.setMessage(newMessageBuilder.build());
+            log.info("Original message: " + msg.toPlain());
         //ToDo: Send player denyMsg when their message is filtered
         }
     }

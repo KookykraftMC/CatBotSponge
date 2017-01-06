@@ -1,7 +1,5 @@
 package com.kookykraftmc.catbot;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
@@ -31,20 +29,20 @@ import ninja.leaping.configurate.loader.ConfigurationLoader;
 public class CatBot
 {
     final public static String CHAT_PREFIX = Color.DARK_MAGENTA + "[" + Color.MAGENTA + "CatBot" + Color.DARK_MAGENTA + "]" + Color.WHITE;
-    final public static String CONSOLE_PREFIX = "[CatBot]";
+    //final public static String CONSOLE_PREFIX = "[CatBot]"; Provided by default
     
     @Inject
     public Game game;
-    
+
     @Inject
-    public static Logger log;
+    public Logger log;
     
     @DefaultConfig(sharedRoot = false)
     @Inject
     private ConfigurationLoader<CommentedConfigurationNode> configLoader;
     
     @Listener
-    public void onServerStart(GameStartedServerEvent e) throws IOException
+    public void onServerStart(GameStartedServerEvent e) //throws IOException
     {
         //ToDo Load config
         /**
@@ -63,10 +61,15 @@ public class CatBot
 
     }
     
+    /**
+     * Send a message with prefix if necessary
+     * @param sender Who to send it to
+     * @param msg Message to send
+     */
     public static void sendMsg(CommandSource sender, String msg)
     {
-        String prefix;
-        prefix = (sender instanceof ConsoleSource)?CONSOLE_PREFIX:CHAT_PREFIX;
+        String prefix = CHAT_PREFIX;
+        if(sender instanceof ConsoleSource) prefix = "";
         Text txt = Text.builder(prefix + msg).toText();
         sender.sendMessage(txt);
     }
