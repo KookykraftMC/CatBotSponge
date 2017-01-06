@@ -25,6 +25,7 @@ public class ChatFilter
     {
         plugin = cb;
         loadCfg();
+        log = cb.log;
     }
 
     @Listener
@@ -35,6 +36,7 @@ public class ChatFilter
         if(!(e instanceof MessageChannelEvent.Chat)) return;
         Text msg = e.getMessage();
         List<Text> msgs = e.getMessage().getChildren();
+        Text.Builder newMessageBuilder = Text.builder();
         for(Text msgPart:msgs)
         {
             String msgPlain = msgPart.toPlain();
@@ -44,9 +46,12 @@ public class ChatFilter
                 isFiltered = true;
                 msgPart = Text.builder(filteredMsg).toText();
             }
+            newMessageBuilder.append(msgPart);
         }
         if(isFiltered)
         {
+            e.setMessage(newMessageBuilder.build());
+            log.info("Original message: " + msg.toPlain());
         //ToDo: Send player denyMsg when their message is filtered
         }
     }
