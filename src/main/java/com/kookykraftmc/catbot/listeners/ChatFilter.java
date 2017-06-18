@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.slf4j.Logger;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.event.Listener;
+import org.spongepowered.api.event.filter.Getter;
+import org.spongepowered.api.event.filter.cause.First;
 import org.spongepowered.api.event.message.MessageChannelEvent;
 import org.spongepowered.api.text.Text;
 
@@ -29,13 +32,12 @@ public class ChatFilter
     }
 
     @Listener
-    public void onChat(MessageChannelEvent e)
+    public void onChat(MessageChannelEvent.Chat e, @First Player player, @Getter("getMessage") Text message)
     {
-        //ToDon't filter if sender has permission to bypass
+        //ToDo Don't filter if sender has permission to bypass
         boolean isFiltered = false;
-        if(!(e instanceof MessageChannelEvent.Chat)) return;
-        Text msg = e.getMessage();
-        List<Text> msgs = e.getMessage().getChildren();
+
+        List<Text> msgs = message.getChildren();
         Text.Builder newMessageBuilder = Text.builder();
         for(Text msgPart:msgs)
         {
@@ -48,10 +50,13 @@ public class ChatFilter
             }
             newMessageBuilder.append(msgPart);
         }
+
+        if (player.hasPermission("catbot.chat.bypass")) isFiltered = false;
+
         if(isFiltered)
         {
             e.setMessage(newMessageBuilder.build());
-            log.info("Original message: " + msg.toPlain());
+            log.info("Original message: " + message.toPlain());
         //ToDo: Send player denyMsg when their message is filtered
         }
     }

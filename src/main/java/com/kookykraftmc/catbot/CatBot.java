@@ -80,13 +80,9 @@ public class CatBot
                 .description(Text.of("Reload CatBot's config."))
                 .permission("catbot.command.reload")
                 .arguments(GenericArguments.none())
-                .executor(new CommandExecutor() {
-                    @Override
-                    public CommandResult execute(CommandSource sender, CommandContext args) throws CommandException
-                    {
-                        return CommandResult.success();
-                        //ToDo reload config
-                    }
+                .executor((sender, args) -> {
+                    return CommandResult.success();
+                    //ToDo reload config
                 })
                 .build();
         Sponge.getCommandManager().register(this, commandReload, "catbotreload");
